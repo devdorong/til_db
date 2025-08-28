@@ -111,3 +111,170 @@ create table authors(
 -- 생성된 테이블의 정보 보기
 describe authors;
 ```
+
+### 6.2. posts 테이블 만들기
+
+- `게시글(posts)` 이라는 테이블 만들기
+  - id : 자동증가(AI), PK
+  - title : 255자
+  - content : 3000자
+  - `authors_id : FK`
+
+```sql
+-- 게시글(posts) 테이블 만들기
+create table posts(
+	id int,
+    title varchar(255),
+    content varchar(3000),
+    authors_id int not null,
+    primary key (id),
+    foreign key (authors_id) references authors(id)
+);
+describe posts;
+```
+
+### 6.3. 테이블 명 변경하기
+
+```sql
+ALTER TABLE 테이블명 RENAME 테이블명;
+
+alter table posts rename post;
+show tables;
+```
+
+### 6.4. 테이블에 컬럼 추가/삭제히기
+
+- 추가하기
+
+```sql
+USE 데이터베이스명;
+-- 반드시 테이블 확인하고 실행하기
+DESCRIBE 테이블명;
+ALTER TABLE 테이블명 ADD 컬럼명 데이터타입;
+
+describe authors;
+alter table authors add age int;
+
+describe authors;
+```
+
+- 삭제하기
+
+```sql
+USE 데이터베이스명;
+-- 반드시 테이블 확인하고 실행하기
+DESCRIBE 테이블명;
+ALTER TABLE 테이블명 DROP 컬럼명 데이터타입;
+
+alter table authors drop age;
+describe authors;
+```
+
+### 6.5. 테이블에 컬럼 변경하기
+
+```sql
+USE 데이터베이스명;
+ALTER TABEL 테이블명 CAHNGE COLUMN 컬럼명 새컬럼명 데이터타입;
+
+describe posts;
+alter table posts change column content contents varchar(3000);
+describe posts;
+```
+
+### 6.6. 특정 컬럼 속성을 변경하기
+
+```sql
+USE 데이터베이스;
+
+DESCRIBE 테이블명;
+ALTER TABLE 테이블명 MODIFY COLUMN 컬럼명 데이터타입;
+DESCRIBE 테이블명;
+
+describe authors;
+-- 컬럼 변경 시 반드시 데이터 타입이 있어야 합니다.
+alter table authors modify column email varchar(30) not null;
+describe authors;
+```
+
+### 6.7. 데이터 추가하기(insert)
+
+- DML : 추가(insert), 수정(update), 삭제(delete)
+
+```sql
+USE 데이터베이스명;
+DESCRIBE 테이블명;
+-- 데이터 추가
+INSERT TO 테이블명 (칼럼1, 칼럼2, 칼럼3) VALUES (값1, 값2, 값3)
+
+insert into authors (id, name, email) values (1, "dorong", "1@1.net");
+describe authors;
+-- 데이터 입력 결과 확인하기(전체 확인)
+select * from authors;
+```
+
+### 6.8. authors 테이블의 id 가 1 인 데이터를 posts 테이블에 추가
+
+- FK 가 있는 경우
+
+```sql
+--  보관용
+drop database board;
+
+create database board;
+
+use board;
+show tables;
+create table authors(
+	id int primary key,
+    name varchar(255),
+    email varchar(255),
+    password varchar(255)
+);
+
+show tables;
+describe authors;
+-- 게시글(posts) 테이블 만들기
+create table posts(
+	id int,
+    title varchar(255),
+    content varchar(3000),
+    authors_id int not null,
+    primary key (id),
+    foreign key (authors_id) references authors(id)
+);
+describe posts;
+
+alter table post rename posts;
+show tables;
+alter table posts rename post;
+show tables;
+
+describe authors;
+alter table authors add age int;
+
+describe authors;
+
+alter table authors drop age;
+describe authors;
+
+alter table posts change column content contents varchar(3000);
+describe posts;
+
+describe authors;
+-- 컬럼 변경 시 반드시 데이터 타입이 있어야 합니다.
+alter table authors modify column email varchar(30) not null;
+describe authors;
+
+insert into authors (id, name, email) values (1, "dorong", "1@1.net");
+describe authors;
+-- 데이터 입력 결과 확인하기(전체 확인)
+select * from authors;
+
+-- FK 가 있는 경우
+describe posts;
+insert into posts  (id, title, contents, authors_id) values (1, "제목", "내용입니다.", 1);
+select * from posts;
+
+
+
+```
